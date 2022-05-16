@@ -1,19 +1,33 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { VERBS } from "../../constants/verbs";
+import { useFocus } from "../../hooks/useFocus";
 import "./index.css";
 
 export const IrregularVerbs: FC = () => {
   const array = useMemo(() => VERBS.sort(() => Math.random() - 0.5), []);
+  const [inputRef, setInputFocus] = useFocus();
 
   const [answer, setAnswer] = useState<string>("");
   const [currentWord, setCurrentWord] = useState<number>(0);
-  const [result, setResult] = useState<any>([]);
+  const [result, setResult] = useState<Array<boolean>>([]);
   const [message, setMessage] = useState<string>("");
   const [finishGame, setFinishGame] = useState<boolean>(false);
-
   const [checkFlag, setCheckFlag] = useState<boolean>(false);
 
   const [infinitive, pastSimple] = array[currentWord];
+  const endWords = array.length - 1 === currentWord;
+
+  useEffect(() => {
+    setInputFocus();
+  }, [setInputFocus]);
+
+  useEffect(() => {
+    if (message === "YES!" && !endWords) {
+      const timerId = setTimeout(() => nextHandler(), 1000);
+
+      return () => clearTimeout(timerId);
+    }
+  }, [endWords, message]);
 
   const onChangeHandler = (e: any) => {
     setAnswer(e.target.value);
@@ -24,7 +38,7 @@ export const IrregularVerbs: FC = () => {
       setFinishGame(true);
     }
 
-    if (answer === pastSimple) {
+    if (answer.trim().toLowerCase() === pastSimple) {
       setMessage("YES!");
       setResult([...result, true]);
       setCheckFlag(true);
@@ -36,14 +50,18 @@ export const IrregularVerbs: FC = () => {
     }
   };
 
+  const onKeyPressHandler = (event: any) => {
+    if (event.charCode === 13) {
+      checkAnswer();
+    }
+  };
+
   const nextHandler = () => {
     setCurrentWord((prev) => (prev += 1));
     setCheckFlag(false);
     setAnswer("");
     setMessage("");
   };
-
-  const endWords = array.length - 1 === currentWord;
 
   return (
     <div className="irregular-verbs">
@@ -61,9 +79,12 @@ export const IrregularVerbs: FC = () => {
       <input
         type="text"
         value={answer}
+        ref={inputRef}
+        autoComplete="off"
         onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
         className="irregular-verbs__input"
-        placeholder="type your answer here"
+        placeholder="Type your answer here"
         disabled={finishGame || checkFlag}
       />
 
