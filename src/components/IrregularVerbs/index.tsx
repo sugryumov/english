@@ -1,67 +1,60 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { Button, Form, Input } from "antd";
+import { ANSWER_STATUSES } from "../../constants/answerStatuses";
 import { VERBS } from "../../constants/verbs";
 import { useFocus } from "../../hooks/useFocus";
+import { AnswerInfo } from "./AnswerInfo";
+import { EndVerbs } from "./EndVerbs";
 import "./index.css";
 
 export const IrregularVerbs: FC = () => {
   const array = useMemo(() => VERBS.sort(() => Math.random() - 0.5), []);
+
   const [inputRef, setInputFocus] = useFocus();
+  const [form] = Form.useForm();
 
-  const [answer, setAnswer] = useState<string>("");
   const [currentWord, setCurrentWord] = useState<number>(0);
+  const [answerStatus, setAnswerStatus] = useState<string>(
+    ANSWER_STATUSES.initial
+  );
   const [result, setResult] = useState<Array<boolean>>([]);
-  const [message, setMessage] = useState<string>("");
-  const [finishGame, setFinishGame] = useState<boolean>(false);
-  const [checkFlag, setCheckFlag] = useState<boolean>(false);
 
-  const [infinitive, pastSimple] = array[currentWord];
-  const endWords = array.length - 1 === currentWord;
+  const [infinitive, pastSimple] = array[currentWord] || [];
+  const endVerbs = array.length === currentWord;
 
   useEffect(() => {
     setInputFocus();
   }, [setInputFocus]);
 
+  const nextVerb = useCallback(() => {
+    setCurrentWord((prev) => (prev += 1));
+    setAnswerStatus(ANSWER_STATUSES.initial);
+    form.resetFields();
+  }, [form]);
+
   useEffect(() => {
-    if (message === "YES!" && !endWords) {
-      const timerId = setTimeout(() => nextHandler(), 1000);
+    if (answerStatus === ANSWER_STATUSES.success) {
+      const timerId = setTimeout(() => nextVerb(), 1000);
 
       return () => clearTimeout(timerId);
     }
-  }, [endWords, message]);
+  }, [answerStatus, form, nextVerb]);
 
-  const onChangeHandler = (e: any) => {
-    setAnswer(e.target.value);
-  };
+  const checkAnswer = ({ answer }: { answer: string }) => {
+    const prepareAnswer = answer.trim().toLowerCase();
 
-  const checkAnswer = () => {
-    if (array.length - 1 === currentWord) {
-      setFinishGame(true);
-    }
-
-    if (answer.trim().toLowerCase() === pastSimple) {
-      setMessage("YES!");
+    if (prepareAnswer === pastSimple) {
+      setAnswerStatus(ANSWER_STATUSES.success);
       setResult([...result, true]);
-      setCheckFlag(true);
     } else {
-      setMessage(`ERROR! Correct answer ${pastSimple}`);
+      setAnswerStatus(ANSWER_STATUSES.failure);
       setResult([...result, false]);
-      setCheckFlag(true);
-      setAnswer("");
     }
   };
 
-  const onKeyPressHandler = (event: any) => {
-    if (event.charCode === 13) {
-      checkAnswer();
-    }
-  };
-
-  const nextHandler = () => {
-    setCurrentWord((prev) => (prev += 1));
-    setCheckFlag(false);
-    setAnswer("");
-    setMessage("");
-  };
+  if (endVerbs) {
+    return <EndVerbs result={result} countVerbs={array.length} />;
+  }
 
   return (
     <div className="irregular-verbs">
@@ -76,42 +69,32 @@ export const IrregularVerbs: FC = () => {
         </p>
       </div>
 
-      <input
-        type="text"
-        value={answer}
-        ref={inputRef}
-        autoComplete="off"
-        onChange={onChangeHandler}
-        onKeyPress={onKeyPressHandler}
-        className="irregular-verbs__input"
-        placeholder="Type your answer here"
-        disabled={finishGame || checkFlag}
+      <Form form={form} onFinish={checkAnswer} autoComplete="off">
+        <Form.Item name="answer">
+          <Input
+            size="large"
+            ref={inputRef}
+            placeholder="Type your answer here"
+          />
+        </Form.Item>
+
+        <Form.Item>
+          <Button
+            size="large"
+            type="primary"
+            htmlType="submit"
+            className="irregular-verbs__button"
+          >
+            Check
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <AnswerInfo
+        answerStatus={answerStatus}
+        pastSimple={pastSimple}
+        nextVerb={nextVerb}
       />
-
-      <div className="irregular-verbs__controls">
-        <button
-          onClick={checkAnswer}
-          className="irregular-verbs__button"
-          disabled={finishGame || checkFlag}
-        >
-          Check
-        </button>
-        <button
-          onClick={nextHandler}
-          className="irregular-verbs__button"
-          disabled={endWords || !checkFlag}
-        >
-          Next
-        </button>
-      </div>
-
-      <p className="irregular-verbs__message">{message}</p>
-
-      {finishGame && (
-        <p>
-          Result : {result.filter(Boolean).length} / {array.length}
-        </p>
-      )}
     </div>
   );
 };

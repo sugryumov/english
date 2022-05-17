@@ -1,7 +1,8 @@
-import { RefObject, useRef } from "react";
+import { InputRef } from "antd";
+import { Ref, useRef } from "react";
 
 export const useFocus = () => {
-  const htmlElRef: RefObject<HTMLInputElement> = useRef(null);
+  const htmlElRef: Ref<InputRef> = useRef(null);
 
   const setFocus = () => {
     htmlElRef.current && htmlElRef.current.focus();
