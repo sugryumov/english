@@ -2,11 +2,13 @@
 
 :root {
   --color-black-translucent: #00000073;
+  --color-blue: #1890ff;
   --color-dark-blue: #2c3e50;
   --color-gray: #dddddd;
   --color-green: #16a085;
   --color-red: #ee5253;
   --color-white: #ffffff;
+  --color-success: #52c41a;
 }
 
 p {

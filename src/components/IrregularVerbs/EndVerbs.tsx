@@ -6,12 +6,22 @@ export const EndVerbs: FC<any> = ({ result, countVerbs }) => {
     document.location.reload();
   };
 
+  const correctAnswers = result.filter(Boolean).length;
+  const percentCorrectAnswers = Math.round((correctAnswers / countVerbs) * 100);
+
   return (
     <div>
+      <h1>Results</h1>
       <p>
-        Result : {result.filter(Boolean).length} / {countVerbs}
+        You have answered {correctAnswers} questions correctly out of{" "}
+        {countVerbs}.
       </p>
-      <Button onClick={restartVerbs}>Restart</Button>
+
+      <p>Your score is {percentCorrectAnswers}%</p>
+
+      <Button size="large" type="primary" onClick={restartVerbs}>
+        Exercise again!
+      </Button>
     </div>
   );
 };

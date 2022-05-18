@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Tooltip } from "antd";
 import { ANSWER_STATUSES } from "../../constants/answerStatuses";
 import { VERBS } from "../../constants/verbs";
 import { useFocus } from "../../hooks/useFocus";
@@ -7,8 +7,11 @@ import { AnswerInfo } from "./AnswerInfo";
 import { EndVerbs } from "./EndVerbs";
 import "./index.css";
 
+const newArray = (length: number = Infinity) =>
+  VERBS.sort(() => Math.random() - 0.5).slice(0, length);
+
 export const IrregularVerbs: FC = () => {
-  const array = useMemo(() => VERBS.sort(() => Math.random() - 0.5), []);
+  const array = useMemo(() => newArray(), []);
 
   const [inputRef, setInputFocus] = useFocus();
   const [form] = Form.useForm();
@@ -19,7 +22,7 @@ export const IrregularVerbs: FC = () => {
   );
   const [result, setResult] = useState<Array<boolean>>([]);
 
-  const [infinitive, pastSimple] = array[currentWord] || [];
+  const [infinitive, pastSimple, , translation] = array[currentWord] || [];
   const endVerbs = array.length === currentWord;
 
   useEffect(() => {
@@ -34,7 +37,7 @@ export const IrregularVerbs: FC = () => {
 
   useEffect(() => {
     if (answerStatus === ANSWER_STATUSES.success) {
-      const timerId = setTimeout(() => nextVerb(), 1000);
+      const timerId = setTimeout(() => nextVerb(), 500);
 
       return () => clearTimeout(timerId);
     }
@@ -61,7 +64,10 @@ export const IrregularVerbs: FC = () => {
       <div className="irregular-verbs__header">
         <p className="irregular-verbs__question">
           What is the simple past of{" "}
-          <span className="irregular-verbs__word">{infinitive}</span>?
+          <Tooltip title={translation}>
+            <span className="irregular-verbs__word">{infinitive}</span>
+          </Tooltip>
+          ?
         </p>
 
         <p className="irregular-verbs__number">
@@ -70,7 +76,10 @@ export const IrregularVerbs: FC = () => {
       </div>
 
       <Form form={form} onFinish={checkAnswer} autoComplete="off">
-        <Form.Item name="answer">
+        <Form.Item
+          name="answer"
+          rules={[{ required: true, message: "Please input your answer!" }]}
+        >
           <Input
             size="large"
             ref={inputRef}

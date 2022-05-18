@@ -31,7 +31,7 @@ export const AnswerInfo: FC<any> = ({ answerStatus, pastSimple, nextVerb }) => {
     return (
       <div className="answer-info__wrapper">
         <div className="answer-info__inner">
-          <LikeTwoTone className="answer-info__icon" twoToneColor="#16a085" />
+          <LikeTwoTone className="answer-info__icon" twoToneColor="#52c41a" />
 
           <p className="answer-info__message">Great! Correct answer</p>
         </div>
