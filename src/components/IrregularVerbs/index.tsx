@@ -17,10 +17,8 @@ export const IrregularVerbs: FC = () => {
   const [form] = Form.useForm();
 
   const [currentWord, setCurrentWord] = useState<number>(0);
-  const [answerStatus, setAnswerStatus] = useState<string>(
-    ANSWER_STATUSES.initial
-  );
-  const [result, setResult] = useState<Array<boolean>>([]);
+  const [answerStatus, setAnswerStatus] = useState<string>(ANSWER_STATUSES.initial);
+  const [result, setResult] = useState<any>([]);
 
   const [infinitive, pastSimple, , translation] = array[currentWord] || [];
   const endVerbs = array.length === currentWord;
@@ -48,15 +46,28 @@ export const IrregularVerbs: FC = () => {
 
     if (prepareAnswer === pastSimple) {
       setAnswerStatus(ANSWER_STATUSES.success);
-      setResult([...result, true]);
     } else {
       setAnswerStatus(ANSWER_STATUSES.failure);
-      setResult([...result, false]);
+      setResult([
+        ...result,
+        {
+          id: currentWord,
+          verb: infinitive,
+          correctAnswer: pastSimple,
+          yourAnswer: prepareAnswer,
+        },
+      ]);
     }
   };
 
   if (endVerbs) {
-    return <EndVerbs result={result} countVerbs={array.length} />;
+    return (
+      <EndVerbs
+        result={result}
+        countVerbs={array.length}
+        setResult={setResult}
+      />
+    );
   }
 
   return (

@@ -1,12 +1,35 @@
 import { FC } from "react";
-import { Button } from "antd";
+import { Button, Table } from "antd";
 
-export const EndVerbs: FC<any> = ({ result, countVerbs }) => {
+const columns = [
+  {
+    title: "№",
+    render: (text: any, record: any, idx: number) => <p>{idx + 1}</p>,
+  },
+  {
+    title: "Verb",
+    dataIndex: "verb",
+    key: "verb",
+  },
+  {
+    title: "Correct answer",
+    dataIndex: "correctAnswer",
+    key: "correctAnswer",
+  },
+  {
+    title: "Your answer",
+    dataIndex: "yourAnswer",
+    key: "id",
+  },
+];
+
+export const EndVerbs: FC<any> = ({ result, countVerbs, setResult }) => {
   const restartVerbs = () => {
     document.location.reload();
+    setResult([]);
   };
 
-  const correctAnswers = result.filter(Boolean).length;
+  const correctAnswers = countVerbs - result.length;
   const percentCorrectAnswers = Math.round((correctAnswers / countVerbs) * 100);
 
   return (
@@ -19,7 +42,20 @@ export const EndVerbs: FC<any> = ({ result, countVerbs }) => {
 
       <p>Your score is {percentCorrectAnswers}%</p>
 
-      <Button size="large" type="primary" onClick={restartVerbs}>
+      <h2>Incorrect answers:</h2>
+
+      <Table
+        rowKey="id"
+        dataSource={result}
+        columns={columns}
+        pagination={false}
+      />
+
+      <Button
+        size="large"
+        onClick={restartVerbs}
+        style={{ marginTop: "20px", width: "100%" }}
+      >
         Exercise again!
       </Button>
     </div>
