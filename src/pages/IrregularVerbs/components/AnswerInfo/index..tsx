@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Button } from "antd";
 import { CloseCircleTwoTone, LikeTwoTone } from "@ant-design/icons";
-import { ANSWER_STATUSES } from "../../constants/answerStatuses";
+import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
 import "./index.css";
 
 export const AnswerInfo: FC<any> = ({ answerStatus, pastSimple, nextVerb }) => {

@@ -1,0 +1,40 @@
+.irregular-verbs__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+}
+
+.irregular-verbs__question {
+  font-size: 40px;
+}
+
+.irregular-verbs__word,
+.answer-info__word {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.irregular-verbs__number {
+  color: var(--color-gray);
+  font-size: 40px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+  .irregular-verbs__header {
+    flex-direction: column-reverse;
+  }
+
+  .irregular-verbs__question {
+    font-size: 32px;
+  }
+
+  .irregular-verbs__number {
+    margin-bottom: 20px;
+  }
+
+  .irregular-verbs__button {
+    width: 100%;
+  }
+}
