@@ -71,7 +71,7 @@ export const IrregularVerbs: FC = () => {
   }
 
   return (
-    <div className="irregular-verbs">
+    <div className="container irregular-verbs">
       <div className="irregular-verbs__header">
         <p className="irregular-verbs__question">
           What is the simple past of{" "}
