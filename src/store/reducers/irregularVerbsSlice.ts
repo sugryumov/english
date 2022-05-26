@@ -4,11 +4,13 @@ import { EXERCISE_STEPS } from "../../constants/exerciseSteps";
 interface IrregularVerbsState {
   step: string;
   settings: any;
+  result: any;
 }
 
 const initialState: IrregularVerbsState = {
   step: EXERCISE_STEPS.SETTINGS,
   settings: null,
+  result: [],
 };
 
 const irregularVerbsSlice = createSlice({
@@ -20,6 +22,9 @@ const irregularVerbsSlice = createSlice({
     },
     setIrregularVerbsSettings(state, { payload }) {
       state.settings = payload;
+    },
+    setIrregularVerbsResult(state, { payload }) {
+      state.result = payload;
     },
   },
 });

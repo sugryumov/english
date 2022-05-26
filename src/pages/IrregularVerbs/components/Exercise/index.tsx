@@ -6,8 +6,8 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { VERBS } from "../../../../constants/verbs";
 import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
 import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
-import "./index.css";
 import { AnswerInfo } from "./AnswerInfo";
+import "./index.css";
 
 const newArray = (length: number = Infinity) =>
   VERBS.sort(() => Math.random() - 0.5).slice(0, length);
@@ -15,8 +15,10 @@ const newArray = (length: number = Infinity) =>
 export const Exercise: FC = () => {
   const [form] = Form.useForm();
 
-  const { setChangeStep } = useActions();
-  const { settings } = useTypedSelector((state) => state.irregularVerbsReducer);
+  const { setChangeStep, setIrregularVerbsResult } = useActions();
+  const { settings, result } = useTypedSelector(
+    (state) => state.irregularVerbsReducer
+  );
   const [inputRef, setInputFocus] = useFocus();
 
   const array = useMemo(() => newArray(settings?.count), [settings]);
@@ -25,7 +27,6 @@ export const Exercise: FC = () => {
   const [answerStatus, setAnswerStatus] = useState<string>(
     ANSWER_STATUSES.initial
   );
-  const [result, setResult] = useState<any>([]);
 
   const [infinitive, pastSimple, , translation] = array[currentWord] || [];
   const endVerbs = array.length === currentWord;
@@ -56,12 +57,11 @@ export const Exercise: FC = () => {
 
   const checkAnswer = ({ answer }: { answer: string }) => {
     const prepareAnswer = answer.trim().toLowerCase();
-
     if (prepareAnswer === pastSimple) {
       setAnswerStatus(ANSWER_STATUSES.success);
     } else {
       setAnswerStatus(ANSWER_STATUSES.failure);
-      setResult([
+      setIrregularVerbsResult([
         ...result,
         {
           id: currentWord,
@@ -98,6 +98,7 @@ export const Exercise: FC = () => {
             size="large"
             ref={inputRef}
             placeholder="Type your answer here"
+            disabled={answerStatus !== ANSWER_STATUSES.initial}
           />
         </Form.Item>
 

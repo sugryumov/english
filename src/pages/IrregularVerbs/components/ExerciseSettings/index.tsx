@@ -36,6 +36,7 @@ export const ExerciseSettings: FC = () => {
             onChange={onChangeCount}
             placeholder="Select a option and change input text above"
           >
+            <Select.Option value="10">10</Select.Option>
             <Select.Option value="20">20</Select.Option>
             <Select.Option value="50">50</Select.Option>
             <Select.Option value="all">All</Select.Option>
@@ -52,7 +53,7 @@ export const ExerciseSettings: FC = () => {
             <Select.Option value="pastParticiple">
               Past Participle
             </Select.Option>
-            <Select.Option value="all">All</Select.Option>
+            <Select.Option value="random">Random</Select.Option>
           </Select>
         </Form.Item>
 
