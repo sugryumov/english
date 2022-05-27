@@ -2,11 +2,14 @@ import { FC } from "react";
 import { Button, Form, Select, Typography } from "antd";
 import { useActions } from "../../../../hooks/useActions";
 import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
+import {
+  OPTIONS_COUNT_VERBS,
+  OPTIONS_FORM_VERBS,
+  OPTIONS_LIST_VERBS,
+} from "./options";
 
 export const ExerciseSettings: FC = () => {
   const { setChangeStep, setIrregularVerbsSettings } = useActions();
-
-  const onChangeCount = () => {};
 
   const onFinish = (values: any) => {
     setIrregularVerbsSettings(values);
@@ -33,32 +36,47 @@ export const ExerciseSettings: FC = () => {
         >
           <Select
             allowClear
-            onChange={onChangeCount}
+            size="large"
             placeholder="Select a option and change input text above"
           >
-            <Select.Option value="10">10</Select.Option>
-            <Select.Option value="20">20</Select.Option>
-            <Select.Option value="50">50</Select.Option>
-            <Select.Option value="all">All</Select.Option>
+            {OPTIONS_COUNT_VERBS.map(({ title, value }) => (
+              <Select.Option key={value} value={value}>
+                {title}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item name="list" label="List verbs" rules={[{ required: true }]}>
+          <Select
+            allowClear
+            size="large"
+            placeholder="Select a option and change input text above"
+          >
+            {OPTIONS_LIST_VERBS.map(({ title, value }) => (
+              <Select.Option key={value} value={value}>
+                {title}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
 
         <Form.Item name="form" label="Form verbs" rules={[{ required: true }]}>
           <Select
             allowClear
-            onChange={onChangeCount}
+            size="large"
             placeholder="Select a option and change input text above"
           >
-            <Select.Option value="simplePast">Simple Past</Select.Option>
-            <Select.Option value="pastParticiple">
-              Past Participle
-            </Select.Option>
-            <Select.Option value="random">Random</Select.Option>
+            {OPTIONS_FORM_VERBS.map(({ title, value }) => (
+              <Select.Option key={value} value={value}>
+                {title}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button size="large" type="primary" htmlType="submit">
             Start exercise
           </Button>
         </Form.Item>
