@@ -9,8 +9,11 @@ import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
 import { AnswerInfo } from "./AnswerInfo";
 import "./index.css";
 
-const newArray = (length: number = Infinity) =>
-  VERBS.sort(() => Math.random() - 0.5).slice(0, length);
+const newArray = (settings: any) => {
+  const { count, list } = settings;
+
+  return VERBS[list].sort(() => Math.random() - 0.5).slice(0, count);
+};
 
 export const Exercise: FC = () => {
   const [form] = Form.useForm();
@@ -21,7 +24,7 @@ export const Exercise: FC = () => {
   );
   const [inputRef, setInputFocus] = useFocus();
 
-  const array = useMemo(() => newArray(settings?.count), [settings]);
+  const array = useMemo(() => newArray(settings), [settings]);
 
   const [currentWord, setCurrentWord] = useState<number>(0);
   const [answerStatus, setAnswerStatus] = useState<string>(

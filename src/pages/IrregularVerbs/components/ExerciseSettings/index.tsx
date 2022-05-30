@@ -61,7 +61,7 @@ export const ExerciseSettings: FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item name="form" label="Form verbs" rules={[{ required: true }]}>
+        {/* <Form.Item name="form" label="Form verbs" rules={[{ required: true }]}>
           <Select
             allowClear
             size="large"
@@ -73,7 +73,7 @@ export const ExerciseSettings: FC = () => {
               </Select.Option>
             ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item>
           <Button size="large" type="primary" htmlType="submit">

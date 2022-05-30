@@ -1,15 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { EXERCISE_STEPS } from "../../constants/exerciseSteps";
 
+type TIrregularVerbsList = "cambridgeEnglish" | "otherSource" | "random";
+type TIrregularVerbsForm = "simplePast" | "pastParticiple" | "random";
+
+interface ISettings {
+  count: number;
+  list: TIrregularVerbsList;
+  form: TIrregularVerbsForm;
+}
+
+interface IResult {
+  id: number;
+  verb: string;
+  correctAnswer: string;
+  yourAnswer: string;
+}
+
 interface IrregularVerbsState {
   step: string;
-  settings: any;
-  result: any;
+  settings: ISettings;
+  result: IResult[];
 }
 
 const initialState: IrregularVerbsState = {
   step: EXERCISE_STEPS.SETTINGS,
-  settings: null,
+  settings: {
+    count: 0,
+    list: "cambridgeEnglish",
+    form: "simplePast",
+  },
   result: [],
 };
 
