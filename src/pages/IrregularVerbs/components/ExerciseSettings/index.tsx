@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Button, Form, Select, Typography } from "antd";
 import { useActions } from "../../../../hooks/useActions";
 import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
+import { IrregularVerbsSettings } from "../../../../types/irregularVerbs";
 import {
   OPTIONS_COUNT_VERBS,
   OPTIONS_FORM_VERBS,
@@ -11,7 +12,7 @@ import {
 export const ExerciseSettings: FC = () => {
   const { setChangeStep, setIrregularVerbsSettings } = useActions();
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: IrregularVerbsSettings) => {
     setIrregularVerbsSettings(values);
     setChangeStep(EXERCISE_STEPS.EXERCISE);
   };

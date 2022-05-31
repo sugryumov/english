@@ -6,10 +6,11 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { VERBS } from "../../../../constants/verbs";
 import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
 import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
+import { IrregularVerbsSettings } from "../../../../types/irregularVerbs";
 import { AnswerInfo } from "./AnswerInfo";
 import "./index.css";
 
-const newArray = (settings: any) => {
+const newArray = (settings: IrregularVerbsSettings) => {
   const { count, list } = settings;
 
   return VERBS[list].sort(() => Math.random() - 0.5).slice(0, count);
