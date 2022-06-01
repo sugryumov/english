@@ -6,7 +6,9 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { VERBS } from "../../../../constants/verbs";
 import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
 import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
+import { IRREGULAR_VERBS_FORM_TYPE } from "../../../../enums/irregularVerbs";
 import { IrregularVerbsSettings } from "../../../../types/irregularVerbs";
+import { addSpaceBeforeCapitalLetter } from "../../../../utils";
 import { AnswerInfo } from "./AnswerInfo";
 import "./index.css";
 
@@ -28,11 +30,13 @@ export const Exercise: FC = () => {
   const array = useMemo(() => newArray(settings), [settings]);
 
   const [currentWord, setCurrentWord] = useState<number>(0);
+  const [correctAnswer, setSetCorrectAnswer] = useState<number>(0);
   const [answerStatus, setAnswerStatus] = useState<string>(
     ANSWER_STATUSES.initial
   );
 
-  const [infinitive, pastSimple, , translation] = array[currentWord] || [];
+  const [infinitive, pastSimple, pastParticiple, translation] =
+    array[currentWord] || [];
   const endVerbs = array.length === currentWord;
 
   useEffect(() => {
@@ -60,8 +64,15 @@ export const Exercise: FC = () => {
   }, [answerStatus, form, nextVerb]);
 
   const checkAnswer = ({ answer }: { answer: string }) => {
+    const correctAnswer =
+      settings.form === IRREGULAR_VERBS_FORM_TYPE.SIMPLE_PAST
+        ? pastSimple
+        : pastParticiple;
+
+    setSetCorrectAnswer(correctAnswer);
+
     const prepareAnswer = answer.trim().toLowerCase();
-    if (prepareAnswer === pastSimple) {
+    if (prepareAnswer === correctAnswer) {
       setAnswerStatus(ANSWER_STATUSES.success);
     } else {
       setAnswerStatus(ANSWER_STATUSES.failure);
@@ -70,7 +81,7 @@ export const Exercise: FC = () => {
         {
           id: currentWord,
           verb: infinitive,
-          correctAnswer: pastSimple,
+          correctAnswer: correctAnswer,
           yourAnswer: prepareAnswer,
         },
       ]);
@@ -81,7 +92,11 @@ export const Exercise: FC = () => {
     <div>
       <div className="exercise__header">
         <p className="exercise__question">
-          What is the simple past of{" "}
+          What is the{" "}
+          <span className="exercise__word">
+            {addSpaceBeforeCapitalLetter(settings.form)}{" "}
+          </span>
+          of{" "}
           <Tooltip title={translation}>
             <span className="exercise__word">{infinitive}</span>
           </Tooltip>
@@ -120,7 +135,7 @@ export const Exercise: FC = () => {
 
       <AnswerInfo
         answerStatus={answerStatus}
-        pastSimple={pastSimple}
+        correctAnswer={correctAnswer}
         nextVerb={nextVerb}
       />
     </div>

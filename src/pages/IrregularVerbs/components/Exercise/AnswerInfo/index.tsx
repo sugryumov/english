@@ -4,7 +4,7 @@ import { CloseCircleTwoTone, LikeTwoTone } from "@ant-design/icons";
 import { ANSWER_STATUSES } from "../../../../../constants/answerStatuses";
 import "./index.css";
 
-export const AnswerInfo: FC<any> = ({ answerStatus, pastSimple, nextVerb }) => {
+export const AnswerInfo: FC<any> = ({ answerStatus, correctAnswer, nextVerb }) => {
   if (answerStatus === ANSWER_STATUSES.failure) {
     return (
       <div className="answer-info__wrapper">
@@ -16,7 +16,7 @@ export const AnswerInfo: FC<any> = ({ answerStatus, pastSimple, nextVerb }) => {
 
           <p className="answer-info__message">
             Wrong! Correct answer{" "}
-            <span className="answer-info__word">{pastSimple}</span>
+            <span className="answer-info__word">{correctAnswer}</span>
           </p>
 
           <Button size="large" onClick={nextVerb}>

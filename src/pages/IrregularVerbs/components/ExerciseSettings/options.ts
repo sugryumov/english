@@ -41,8 +41,4 @@ export const OPTIONS_FORM_VERBS = [
     title: "Past Participle",
     value: "pastParticiple",
   },
-  {
-    title: "Random",
-    value: "random",
-  },
 ];
