@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { Button, Form, Input, Tooltip } from "antd";
+import { Button, Form, Input } from "antd";
 import { useActions } from "../../../../hooks/useActions";
 import { useFocus } from "../../../../hooks/useFocus";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -8,8 +8,8 @@ import { EXERCISE_STEPS } from "../../../../constants/exerciseSteps";
 import { ANSWER_STATUSES } from "../../../../constants/answerStatuses";
 import { IRREGULAR_VERBS_FORM_TYPE } from "../../../../enums/irregularVerbs";
 import { IrregularVerbsSettings } from "../../../../types/irregularVerbs";
-import { addSpaceBeforeCapitalLetter } from "../../../../utils";
 import { AnswerInfo } from "./AnswerInfo";
+import { Header } from "./Header";
 import "./index.css";
 
 const newArray = (settings: IrregularVerbsSettings) => {
@@ -90,23 +90,7 @@ export const Exercise: FC = () => {
 
   return (
     <div>
-      <div className="exercise__header">
-        <p className="exercise__question">
-          What is the{" "}
-          <span className="exercise__word">
-            {addSpaceBeforeCapitalLetter(settings.form)}{" "}
-          </span>
-          of{" "}
-          <Tooltip title={translation}>
-            <span className="exercise__word">{infinitive}</span>
-          </Tooltip>
-          ?
-        </p>
-
-        <p className="exercise__number">
-          {currentWord + 1} of {array.length}
-        </p>
-      </div>
+      <Header infinitive={infinitive} translation={translation} />
 
       <Form form={form} onFinish={checkAnswer} autoComplete="off">
         <Form.Item

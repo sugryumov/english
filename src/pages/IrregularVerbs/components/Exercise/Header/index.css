@@ -1,0 +1,35 @@
+.exercise__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+}
+
+.exercise__question {
+  font-size: 40px;
+}
+
+.exercise__word {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.exercise__number {
+  color: var(--color-gray);
+  font-size: 40px;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+  .exercise__header {
+    flex-direction: column-reverse;
+  }
+
+  .exercise__question {
+    font-size: 32px;
+  }
+
+  .exercise__number {
+    margin-bottom: 20px;
+  }
+}
