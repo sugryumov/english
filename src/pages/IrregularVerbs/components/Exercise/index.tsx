@@ -90,7 +90,11 @@ export const Exercise: FC = () => {
 
   return (
     <div>
-      <Header infinitive={infinitive} translation={translation} />
+      <Header
+        infinitive={infinitive}
+        currentWord={currentWord}
+        translation={translation}
+      />
 
       <Form form={form} onFinish={checkAnswer} autoComplete="off">
         <Form.Item

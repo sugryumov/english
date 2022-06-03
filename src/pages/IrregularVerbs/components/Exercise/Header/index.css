@@ -1,11 +1,11 @@
 .exercise__header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   padding: 25px 0;
 }
 
 .exercise__question {
+  margin-top: 20px;
   font-size: 40px;
 }
 
